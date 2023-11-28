@@ -112,7 +112,7 @@ const FeedbackForm = () => {
 
   // The JSX for the form elements
   return (
-    <form onSubmit={handleSubmit} style={{ width: '500px', margin: 'auto', backgroundColor: '#F0F0F0', padding: '20px', borderRadius: '10px' }}>
+    <form onSubmit={handleSubmit} style={{ width: '800px',height:'100%', margin: 'auto', backgroundColor: '#F0F0F0', padding: '20px', borderRadius: '10px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="h4" style={{ color: purple[500] }}>
           Website Feedback Form

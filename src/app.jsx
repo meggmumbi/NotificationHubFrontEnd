@@ -1,7 +1,6 @@
 /* eslint-disable perfectionist/sort-imports */
 import 'src/global.css';
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
+
 
 
 import { useScrollToTop } from 'src/hooks/use-scroll-to-top';

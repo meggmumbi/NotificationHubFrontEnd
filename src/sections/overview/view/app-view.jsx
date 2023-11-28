@@ -9,27 +9,18 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Slider from 'react-slick';
 
-
-
-
-import Iconify from 'src/components/iconify';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { posts } from 'src/_mock/blog';
 import PostCard from 'src/sections/blog/post-card';
 import PostSearch from 'src/sections/blog/post-search';
 import PostSort from 'src/sections/blog/post-sort';
 
-
-import AppTasks from '../app-tasks';
 import AppNewsUpdate from '../app-news-update';
 import AppOrderTimeline from '../app-order-timeline';
-import AppCurrentVisits from '../app-current-visits';
-import AppWebsiteVisits from '../app-website-visits';
-import AppWidgetSummary from '../app-widget-summary';
-import AppTrafficBySite from '../app-traffic-by-site';
-import AppCurrentSubject from '../app-current-subject';
-import AppConversionRates from '../app-conversion-rates';
+
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 
 
 // ----------------------------------------------------------------------
@@ -98,12 +89,13 @@ const settings = {
           ]}
         />
       </Stack>
-
+      
       <Grid container spacing={3}>
         {posts.map((post, index) => (
           <PostCard key={post.id} post={post} index={index} />
         ))}
       </Grid>
+     
 
       <Grid container spacing={3}>
 
