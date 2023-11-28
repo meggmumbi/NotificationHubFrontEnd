@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
+import { useNavigate, Routes, Route } from 'react-router-dom';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -11,6 +12,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
 import { users } from 'src/_mock/user';
+
+import axios from 'axios';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -35,7 +38,15 @@ export default function UserPage() {
 
   const [filterName, setFilterName] = useState('');
 
+  const [userData, setUsers] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+
+  const [error, setError] = useState(null);
+
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const navigate = useNavigate();
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -45,9 +56,24 @@ export default function UserPage() {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/v1/users');
+        setUsers(response.data); 
+        setLoading(false);
+      } catch (err) {
+        setError(err);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []); 
+
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.name);
+      const newSelecteds = userData.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -87,7 +113,7 @@ export default function UserPage() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: users,
+    inputData: userData,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -99,7 +125,7 @@ export default function UserPage() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Users</Typography>
 
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
+        <Button variant="contained" color="inherit" onClick={() => navigate('/createUser')} startIcon={<Iconify icon="eva:plus-fill" />}>
           New User
         </Button>
       </Stack>
@@ -117,16 +143,15 @@ export default function UserPage() {
               <UserTableHead
                 order={order}
                 orderBy={orderBy}
-                rowCount={users.length}
+                rowCount={userData.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'name', label: 'Name' },
-                  { id: 'company', label: 'Company' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
-                  { id: 'status', label: 'Status' },
+                  { id: 'contacts', label: 'Contacts' },
+                  { id: 'email', label: 'Email' },
+                 
                   { id: '' },
                 ]}
               />
@@ -137,11 +162,11 @@ export default function UserPage() {
                     <UserTableRow
                       key={row.id}
                       name={row.name}
-                      role={row.role}
-                      status={row.status}
-                      company={row.company}
+                      contacts={row.contacts}
+                      
+                      email={row.email}
                       avatarUrl={row.avatarUrl}
-                      isVerified={row.isVerified}
+                     
                       selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => handleClick(event, row.name)}
                     />
@@ -161,7 +186,7 @@ export default function UserPage() {
         <TablePagination
           page={page}
           component="div"
-          count={users.length}
+          count={userData.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}

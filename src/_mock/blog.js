@@ -21,7 +21,7 @@ export const posts = filteredNotifications.map((title, index) => ({
   id: title.notificationId,
   cover: `/assets/images/covers/cover_${index + 1}.jpg`,
   title: title.title,
-  createdAt: faker.date.anytime(),
+  createdAt: title.date,
   view: faker.number.int(99999),
   comment: faker.number.int(99999),
   share: faker.number.int(99999),

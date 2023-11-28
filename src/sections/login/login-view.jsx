@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import React, { createContext, useState } from 'react';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -10,6 +12,9 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
+
+import {toast ,ToastContainer} from 'react-toastify';
+
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
@@ -19,24 +24,81 @@ import { bgGradient } from 'src/theme/css';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
-
+import { useAuth } from 'src/contexts/AuthProvider';
 // ----------------------------------------------------------------------
 
+
 export default function LoginView() {
+  // const { setUserData } = useContext(UserDataContext);
+  const { login } = useAuth();
+
   const theme = useTheme();
 
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = () => {
-    router.push('/dashboard');
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  });
+
+  const [user, setUser] = useState(null); // State to store user data
+  
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+   
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleClick = async () => {
+    console.log(formData.email)
+    console.log(formData.password)
+    try {
+      const response = await fetch('http://localhost:8080/api/v1/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', 
+         
+        },
+        body: JSON.stringify({
+          username: formData.email, 
+          password: formData.password,
+        }),
+       
+      });
+  
+      
+      if (response.ok) {
+        const userData = await response.json(); 
+        setUser(userData); 
+        login(userData);
+       
+        router.push('/');
+      } else {
+        
+         toast.error('Login failed', { position: 'top-right' });         
+         console.error('Login failed');
+         console.log(response);
+     
+      }
+    } catch (error) {
+      
+      toast.error('Network error', { position: 'top-right' });         
+      console.error('Network error:', error);
+     
+    }
   };
 
   const renderForm = (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
+        <TextField name="email" label="Username"  
+          value={formData.email}
+          onChange={handleChange} />
 
         <TextField
           name="password"
@@ -51,6 +113,7 @@ export default function LoginView() {
               </InputAdornment>
             ),
           }}
+          onChange={handleChange}
         />
       </Stack>
 
@@ -70,6 +133,7 @@ export default function LoginView() {
       >
         Login
       </LoadingButton>
+     
     </>
   );
 
@@ -99,12 +163,12 @@ export default function LoginView() {
             maxWidth: 420,
           }}
         >
-          <Typography variant="h4">Sign in to Minimal</Typography>
+          <Typography variant="h4">Sign in to Notification Hub</Typography>
 
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
-            Don’t have an account?
-            <Link variant="subtitle2" sx={{ ml: 0.5 }}>
-              Get started
+           
+            <Link variant="subtitle2" href='/' sx={{ ml: 0.5 }}>
+             Back to Dashboard
             </Link>
           </Typography>
 
@@ -149,6 +213,7 @@ export default function LoginView() {
           {renderForm}
         </Card>
       </Stack>
+      <ToastContainer />
     </Box>
   );
 }

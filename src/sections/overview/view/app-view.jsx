@@ -115,7 +115,7 @@ const settings = {
               title: notification.title,
               description: notification.description,
               image: `/assets/images/covers/cover_${index + 1}.jpg`,
-              postedAt: faker.date.recent(),
+              postedAt: notification.date,
               
             }))}
           />
@@ -123,12 +123,12 @@ const settings = {
 
         <Grid xs={12} md={6} lg={4}>
           <AppOrderTimeline
-            title="Notitifation Timeline"
+            title="Notification Timeline"
             list={filteredNotifications.map((notification, index) => ({
               id: notification.notificationId,
               title: [`${notification.title}`],
               type: 'scheduled',
-              time: faker.date.soon(),
+              time: notification.date,
             }))}
           />
         </Grid>

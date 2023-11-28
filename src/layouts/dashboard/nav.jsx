@@ -19,13 +19,17 @@ import { account } from 'src/_mock/account';
 
 import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
+import { useAuth } from 'src/contexts/AuthProvider';
 
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
 
+
+
 // ----------------------------------------------------------------------
 
 export default function Nav({ openNav, onCloseNav }) {
+  const { user } = useAuth();
   const pathname = usePathname();
 
   const upLg = useResponsive('up', 'lg');
