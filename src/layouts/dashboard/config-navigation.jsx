@@ -12,22 +12,27 @@ const navConfig = [
     path: '/',
     icon: icon('ic_analytics'),
   },
+
+  {
+    title: 'Feedback',
+    path: '/feedback',
+    icon: icon('ic_feedback'),
+  }, 
   {
     title: 'Notification',
     path: '/notifications',
     icon: icon('ic_notification'),
   }, 
   {
+    title: 'View Feedbacks',
+    path: '/viewfeedback',
+    icon: icon('ic_notification_chat'),
+  }, 
+  {
     title: 'user',
     path: '/user',
     icon: icon('ic_user'),
   }, 
-  {
-    title: 'Feedback',
-    path: '/feedback',
-    icon: icon('ic_feedback'),
-  }, 
-  
 ];
 
 export default navConfig;

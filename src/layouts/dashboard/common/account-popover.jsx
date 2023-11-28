@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'src/routes/hooks';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -32,10 +33,15 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+  const router = useRouter();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
+
+  const handleLogout =() => {
+    router.push('/login');
+  }
 
   const handleClose = () => {
     setOpen(null);
@@ -105,7 +111,7 @@ export default function AccountPopover() {
         <MenuItem
           disableRipple
           disableTouchRipple
-          onClick={handleClose}
+          onClick={handleLogout}
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
           Logout

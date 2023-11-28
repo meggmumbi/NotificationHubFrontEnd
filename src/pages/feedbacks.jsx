@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useRouter } from 'src/routes/hooks';
-import { UserView } from 'src/sections/user/view';
+import { FeedBackView } from 'src/sections/feedback';
 import { useAuth } from 'src/contexts/AuthProvider';
 // ----------------------------------------------------------------------
 
-export default function UserPage() {
+export default function FeedBackPage() {
   const { user } = useAuth();
   const router = useRouter();
   
@@ -17,10 +17,10 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> FeedBack | Minimal UI </title>
       </Helmet>
 
-      <UserView />
+      <FeedBackView />
     </>
   );
 }

@@ -9,6 +9,7 @@ export const NotificationPage = lazy(() => import('src/pages/notifications'));
 export const CreateNewNotificationPage = lazy(() => import('src/pages/create-new-notification'));
 export const CreateNewUserPage = lazy(() => import('src/pages/create-new-user'));
 export const FeedbackPage = lazy(() => import('src/pages/notification-feedback'));
+export const Feedback = lazy(() => import('src/pages/feedbacks'));
 export const UserPage = lazy(() => import('src/pages/user'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
@@ -35,6 +36,7 @@ export default function Router() {
         { path: 'createNotification', element: <CreateNewNotificationPage /> },
         { path: 'createUser', element: <CreateNewUserPage /> },
         {path: 'feedback', element: <FeedbackPage/> },
+        {path: 'viewfeedback', element: <Feedback/> },
       ],
     },
     {

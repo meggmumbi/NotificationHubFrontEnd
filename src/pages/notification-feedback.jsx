@@ -1,8 +1,13 @@
-import React from 'react';
-import { Button, TextField, Typography, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material';
+import React,  { useState } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import {toast ,ToastContainer} from 'react-toastify';
+import { useRouter } from 'src/routes/hooks';
+import { Button, TextField, CircularProgress, Typography, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material';
 import { purple } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 import { Download } from '@mui/icons-material';
+
 
 // Custom styles for the form elements
 const PurpleButton = styled(Button)(({ theme }) => ({
@@ -33,6 +38,8 @@ const FeedbackForm = () => {
   const [reason, setReason] = React.useState('');
   const [found, setFound] = React.useState('');
   const [userFriendly, setUserFriendly] = React.useState('');
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   // Handlers for the form inputs
   const handleNameChange = (event) => {
@@ -59,18 +66,48 @@ const FeedbackForm = () => {
     setUserFriendly(event.target.value);
   };
 
-  // Handler for the form submission
+
+
   const handleSubmit = (event) => {
+    // Prevent the default browser behavior
     event.preventDefault();
-    // Here you can send the feedback data to your server or API
-    console.log('Feedback data:', { name, email, firstTime, reason, found, userFriendly });
-    // You can also reset the form inputs after submission
-    setName('');
-    setEmail('');
-    setFirstTime('Yes');
-    setReason('');
-    setFound('');
-    setUserFriendly('');
+    setLoading(true);
+  
+    const feedbackdata = {
+      name, email, firstTime, reason, found, userFriendly
+      
+    };
+    // Define the endpoint URL
+    const url = 'http://localhost:8080/api/v1/feedback';
+  
+    // Make a POST request with axios
+    axios.post(url, feedbackdata)
+      .then(response => {
+        
+        setLoading(false);
+        
+      
+        toast.success("Feedback added successfully", {
+          position: "top-right", 
+          autoClose: 1000, 
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true, 
+          draggable: true, 
+          progress: undefined, 
+          onClose: () => router.push('/')
+        });
+                   
+
+        console.log(response.data);
+       
+      })
+      .catch(error => {
+        toast.error('Something went wrong');
+       
+        console.error(error);
+        
+      });
   };
 
   // The JSX for the form elements
@@ -132,10 +169,25 @@ const FeedbackForm = () => {
         onChange={handleUserFriendlyChange}
         style={{ width: '100%', marginTop: '20px' }}
       />
-      <PurpleButton type="submit" variant="contained" style={{ width: '100%', marginTop: '20px' }}>
-        Send your Feedback
+      <PurpleButton type="submit" variant="contained"  disabled={loading}
+                fullWidth
+                sx={{ 
+                  height: 48,
+                  '@media (min-width: 600px)': {
+                    width: '50%',
+                   
+                  }
+                }} style={{ width: '100%', marginTop: '20px' }}>
+         {loading ? (
+              <CircularProgress size={24} color="inherit" /> 
+            ) : (
+              ' Submit Feedback'
+            )}
+           
       </PurpleButton>
+      <ToastContainer />
     </form>
+    
   );
 };
 
